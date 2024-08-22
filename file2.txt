@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 how about u
+=======
+hello very one 
+iam gud 
+how about you 
+>>>>>>> keo
