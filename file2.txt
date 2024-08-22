@@ -1,4 +1,10 @@
 hello :wqvery one 
 iam gud 
+<<<<<<< HEAD
 how about you 
+>>>>>>> keo
+=======
+how about you
+what about your worki:wq
+
 >>>>>>> keo
