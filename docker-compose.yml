@@ -1,0 +1,28 @@
+services :
+  db :
+    image : mysql:latest
+    volumes :
+      - db_data:/var/lib/msql
+      restart: always
+      environment :
+        - mysql_root_password=someaddbook
+        - mysql_database=addbook
+        - mysql_user=addbook
+        - mysql_password=addbook
+        expose :
+          - 3306
+          - 33060
+  addressbook :
+     image : addressbook:latest
+    volumes :
+      - db_data:/var/www/html
+      ports :
+        - 8090:8080
+      restart : always
+        - addbook_db_host=db
+        - addbook_db_user=addbok
+        - addbook_db_password=addbook
+        - addbook_db_name=addbook
+volumes :
+  db_data :
+  ab_data :
