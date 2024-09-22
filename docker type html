@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+  <head>
+     <title>Welcome to Devops Learning!!</title>
+     <link rel="stylesheet" href="/built/css/default.css" />
+
+
+     <script src="/bower_components/angular/angular.js"></ script>
+     <script src="/bower_components/angular-route/angularroute.
+js"></script>
+     <script src="/js/controllers.js"></script>
+     <style>
+     img {
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    padding-top: 10%;
+           }
+      marquee {
+   text-align:center;
+}
+     </style>
+   </head>
+   <body>
+  <center>
+<img src= "https://encryptedtbn0.
+gstatic.com/images?q=tbn:ANd9GcSE65xZ9tUWsRzustJpOZ1rWiA
+-veUSfL9mNNZG7-Y6Rqb2j5nz" alt="ibm_logo"width="200"
+height="150" >
+<br>
+        </center>
+
+         <marquee direction="up" behavior="slide"
+style="height:100px"><font size="150px"> WELCOME TO DEVOPS
+LEARNING </marquee>
+   </body>
+   <script>
+              angular.element(document).ready(function() {
+              angular.bootstrap(document, ['ConsoleModule']);
+    });
+     </script>
+</html>
