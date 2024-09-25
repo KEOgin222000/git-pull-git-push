@@ -1,0 +1,4 @@
+start on startup
+script
+/usr/bin/node_exporter
+end script
