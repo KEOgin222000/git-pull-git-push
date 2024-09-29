@@ -1,0 +1,122 @@
+$ cat terraformfile.tf
+# VPC Creation
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Network Setup To Create A vpc
+resource "aws_vpc" "my-vpc" {
+   cidr_block = "10.0.0.0/24"
+   tags = {
+      name = "terraformvpc"
+   }
+}
+
+# Internet gateway Creation
+resource "aws_internet_gateway" "my-igw" {
+  vpc_id = aws_vpc.my-vpc.id
+
+  tags = {
+    name = "my-internet-gateway"
+  }
+}
+
+# Route Table Creation
+resource "aws_route_table" "my-rt" {
+  vpc_id = aws_vpc.my-vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my-igw.id
+  }
+
+  tags = {
+    name = "my-route-table"
+  }
+}
+
+# subnet Creation
+
+resource "aws_subnet" "my-sn" {
+  vpc_id     = aws_vpc.my-vpc.id
+  cidr_block = "10.0.0.0/24"  # This is valid within the 10.0.0.0/16 range
+
+  tags = {
+    Name = "my-subnet"
+  }
+}
+
+
+# Security Group Creation enable Ports 22, 80, 443
+resource  "aws_security_group" "my-sg" {
+   vpc_id = aws_vpc.my-vpc.id
+   ingress {
+       from_port = 22
+       to_port = 22
+       protocol = "tcp"
+       cidr_blocks = ["0.0.0.0/0"]
+   }
+   ingress {
+       from_port   = 80
+       to_port     = 80
+       protocol    = "tcp"
+       cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+       from_port   = 443
+       to_port     = 443
+       protocol    = "tcp"
+       cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    name = " my-security_group "
+  }
+}
+
+# Network Interface Setup Creation
+
+resource "aws_network_interface" "my-ni" {
+  subnet_id       = aws_subnet.my-sn.id
+  private_ips     = ["10.0.0.10"]
+  security_groups = [aws_security_group.my-sg.id]
+
+  tags = {
+    name = "my-network-interface"
+  }
+}
+
+
+
+#Create Elastic IP Creation
+
+resource "aws_eip" "eip-ni" {
+  domain = "vpc"  # Use domain instead of vpc
+}
+
+resource "aws_eip_association" "eip-association" {
+   allocation_id = aws_eip.eip-ni.id
+   network_interface_id = aws_network_interface.my-ni.id
+}
+
+# EC2 setup
+
+resource "aws_instance" "demo" {
+  ami = "ami-0e86e20dae9224db8"
+  instance_type = "t2.micro"
+  availability_zone = "us-east-1c"
+  key_name = "keokeo"
+  user_data = <<-EOF
+  #!/bin/bash
+  sudo apt install maven -y
+  EOF
+  tags = {
+     name = "terraformDemoInstance"
+  }
+  network_interface {
+      device_index = 0
+      network_interface_id =aws_network_interface.my-ni.id
+      }
+}
+
