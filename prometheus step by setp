@@ -1,1 +1,2 @@
 sudo ln -s ~/prometheus/node_exporter/node_exporter/use/bin
+sudo nano /etc/init/node_exporter.conf
