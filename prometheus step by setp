@@ -1,0 +1,1 @@
+sudo ln -s ~/prometheus/node_exporter/node_exporter/use/bin
