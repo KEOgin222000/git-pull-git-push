@@ -1,0 +1,26 @@
+---
+- hosts: ansiblegroup
+  become: yes
+  tasks:
+    - name: Install git
+      apt:
+        name: git
+        update_cache: yes
+        state: latest
+
+    - name: Install Maven
+      apt:
+        name: maven
+        update_cache: yes
+        state: latest
+
+    - name: Download Tomcat9
+      get_url:
+        url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.96/bin/apache-tomcat-9.0.96.tar.gz
+        dest: /tmp/apache-tomcat-9.0.96.tar.gz
+
+    - name: Extract Tomcat
+      unarchive:
+        src: /tmp/apache-tomcat-9.0.96.tar.gz
+        dest: /opt/
+        remote_src: yes
